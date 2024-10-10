@@ -79,6 +79,17 @@ Insert Into ConservationStatus values
 
 go 
 
+
+Insert Into ConservationStatus values
+		(6, 1, 'Least Concern', '1970-01-01'),
+		(7, 2, 'Least Concern', '1980-02-01'),
+		(8, 3, 'Least Concern', '1990-03-01'),
+		(9, 4, 'Vulnerable', '1970-04-01'),
+		(10, 5, 'Endangered', '1985-05-01');
+
+go 
+
+
 Insert Into Snakes values 
 	  (6, 1, 4.8, 3, 'Brown'),
 	  (7, 1, 4.6, 3, 'Brown'),
@@ -174,22 +185,25 @@ go
 --- Trigger Function 
 
 
-CREATE TRIGGER update_status
-ON ConservationStatus
-AFTER UPDATE
-AS
-BEGIN
-    DECLARE @CurrentDate DATE;
-    SET @CurrentDate = GETDATE();
+--CREATE TRIGGER update_status
+--ON ConservationStatus
+--AFTER UPDATE
+--AS
+--BEGIN
+--    DECLARE @CurrentDate DATE;
+--    SET @CurrentDate = GETDATE();
 
-    UPDATE ConservationStatus
-    SET LastUpdated = @CurrentDate
-    WHERE StatusID IN (SELECT StatusID FROM inserted);
-END;
-GO
+--    UPDATE ConservationStatus
+--    SET LastUpdated = @CurrentDate
+--    WHERE StatusID IN (SELECT StatusID FROM inserted);
+--END;
+--GO
 
-Update ConservationStatus Set Staus = 'Endangered' where StatusID = 2;
+--Update ConservationStatus Set Staus = 'Endangered' where StatusID = 2;
 
+Select sp.CommonName, cs.SpeciesID, cs.LastUpdated, cs.staus from  ConservationStatus as cs 
+    join Species as sp on sp.SpeciesID = cs.SpeciesID
+    Order By cs.SpeciesID, cs.LastUpdated;
 go
 
 
